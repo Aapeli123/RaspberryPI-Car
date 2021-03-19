@@ -7,7 +7,7 @@ class Car:
     It can be driven with methods like forward and backward.
     It can be steered using the methods turnLeft, turnRight and centerSteering
 
-    Before driwing call beginDriving and to stop driwing call stopDriving
+    Before driving call beginDriving and to stop driwing call stopDriving
 
     To send data to physical servos you should call updatePwm
     """
