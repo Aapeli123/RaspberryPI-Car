@@ -31,7 +31,7 @@ class Car:
         self.__pwm.set_pwm_freq(60)
 
         self.__driving = False
-        if __init_throttle > __toggleState:
+        if self.__init_throttle > self.__toggleState:
             self.dir = 1
         else:
             self.dir =-1
@@ -51,16 +51,16 @@ class Car:
         sleep(0.1)
 
     def __hasNotChanged(self):
-        return self.__throttle_pwm == __init_throttle and not self.__driving 
+        return self.__throttle_pwm == self.__init_throttle and not self.__driving 
 
     def forward(self):
         if self.__hasNotChanged():
             sleep(0.1)
             return
-        if self.__throttle_pwm + __delta_throttle < __fwdmax:
-            self.__throttle_pwm += __delta_throttle
-        if self.__throttle_pwm > __toggleState and self.__dir < 0:
-                self.pwm.set_pwm(2,0,__toggleState)
+        if self.__throttle_pwm + self.__delta_throttle < __fwdmax:
+            self.__throttle_pwm += self.__delta_throttle
+        if self.__throttle_pwm > self.__toggleState and self.__dir < 0:
+                self.pwm.set_pwm(2,0,self.__toggleState)
                 self.__dir = 1
                 sleep(0.1)
 
@@ -68,10 +68,10 @@ class Car:
         if self.__hasNotChanged():
             sleep(0.1)
             return
-        if self.__throttle_pwm - __delta_throttle > __revmin:
-            self.__throttle_pwm -= __delta_throttle
-            if self.__throttle_pwm < __toggleState and self.__dir > 0:
-                self.__pwm.set_pwm(2,0,__toggleState)
+        if self.__throttle_pwm - self.__delta_throttle > self.__revmin:
+            self.__throttle_pwm -= self.__delta_throttle
+            if self.__throttle_pwm < self.__toggleState and self.__dir > 0:
+                self.__pwm.set_pwm(2,0,self.__toggleState)
                 self.__dir = -1
                 sleep(0.1)
             
