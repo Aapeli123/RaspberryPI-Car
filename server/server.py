@@ -11,8 +11,9 @@ from car import Car
 car = Car()
 
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-pem = pathlib.Path(__file__).with_name("localhost.pem")
-ssl_context.load_cert_chain(pem)
+cert = pathlib.Path(__file__).with_name("cert.crt")
+key = pathlib.Path(__file__).with_name("key.pem")
+ssl_context.load_cert_chain(cert, keyfile=key)
 
 connCount = 0
 async def carController(websocket: WebSocketServerProtocol, path: str):
