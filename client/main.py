@@ -8,7 +8,9 @@ cert = pathlib.Path(__file__).with_name("cert.crt")
 key = pathlib.Path(__file__).with_name("key.pem")
 
 ssl_context.load_cert_chain(cert, keyfile=key)
-ip = input("Whats the ip of the car")
+
+ssl_context.load_verify_locations(cert)
+
 async def connection():
     uri = "wss://localhost:4242"
 
