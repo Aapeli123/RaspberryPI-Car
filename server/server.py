@@ -1,66 +1,80 @@
-import asyncio
-from os import write
 import requests
-from websockets import server, exceptions
-from websockets.legacy.server import WebSocketServerProtocol
-import ssl
-import pathlib
-
-
 from car import Car
+import uuid
+from bottle import route, run
+
 car = Car()
 
-ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-cert = pathlib.Path(__file__).with_name("cert.crt")
-key = pathlib.Path(__file__).with_name("key.pem")
-ssl_context.load_cert_chain(cert, keyfile=key)
+sessionid = ""
 
-connCount = 0
-async def carController(websocket: WebSocketServerProtocol, path: str):
-    global connCount
+@route('/start')
+def start():
+    global sessionid
+    if sessionid != "":
+        return "Car is already being controlled"
+    sessionid = str(uuid.uuid4())
+    return sessionid
 
-    if connCount == 1:
-        await websocket.send("Car is already being controlled")
-        await websocket.close()
-        return
+@route('/f/<sid>')
+def goForward(sid):
+    global sessionid
+    if sessionid == sid:
+        car.forward()
+        return str(car)
 
-    connCount = 1
-    remoteIP = websocket.remote_address
-    print(f"Websocket connection from: {remoteIP}")
-    await websocket.send(str(car))
-    try:
-        async for message in websocket:
-            if message == "f": # Forward
-                car.forward()
-            elif message == "b": # Backward
-                car.backward()
-            elif message == "l": # Left
-                car.turnLeft()
-            elif message == "r": # Right
-                car.turnRight()
-            elif message == "q": # Quit
-                car.stopDriving()
-            elif message == "s": # Start
-                car.beginDriving()
-            elif message == "c":
-                car.centerSteering()
-            else:
-                await websocket.send("Unknown message")
-            await websocket.send(str(car))
-            car.updatePwm()
-    except exceptions.ConnectionClosedError as e:
+@route('/b/<sid>')
+def goBackwards(sid):
+    global sessionid
+    if sessionid == sid:
+        car.backward()
+        return str(car)
+
+@route('/l/<sid>')
+def turnLeft(sid):
+    global sessionid
+    if sessionid == sid:
+        car.turnLeft()
+        return str(car)
+
+@route('/r/<sid>')
+def turnRight(sid):
+    global sessionid
+    if sessionid == sid:
+        car.turnRight()
+        return str(car)
+
+@route('/s/<sid>')
+def startDriving(sid):
+    global sessionid
+    if sessionid == sid:
+        car.beginDriving()
+        return str(car)
+
+@route('/q/<sid>')
+def stopDriving(sid):
+    global sessionid
+    if sessionid == sid:
         car.stopDriving()
-        connCount = 0
-        return
-
-async def main():
-    ip = getIp()
-    async with server.serve(carController, "localhost", 4242, ssl=ssl_context):
-        print(f"Websocket server listening on address {ip}:4242")
-        await asyncio.Future()
+        return str(car)
 
 
+@route('/c/<sid>')
+def centerSteering(sid):
+    global sessionid
+    if sessionid == sid:
+        car.centerSteering()
+        return str(car)
+
+
+@route('/quit/<sid>')
+def quit(sid):
+    global sessionid
+    if sid == sessionid:
+        sessionid = ""
+    return
 
 def getIp():
     return requests.get("https://api.ipify.org/").text
-asyncio.run(main())
+
+print(f"Starting server on address: {getIp()}:4242")
+run(host="0.0.0.0", port=4242)
