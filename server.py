@@ -20,7 +20,7 @@ async def carController(websocket: WebSocketServerProtocol, path: str):
         return
 
     connCount = 1
-    remoteIP, _ = websocket.remote_address
+    remoteIP = websocket.remote_address
     print(f"Websocket connection from: {remoteIP}")
     websocket.send(str(car))
     try:
@@ -37,6 +37,8 @@ async def carController(websocket: WebSocketServerProtocol, path: str):
                 car.stopDriving()
             elif message == "s": # Start
                 car.beginDriving()
+            elif message == "c":
+                car.centerSteering()
             else:
                 await websocket.send("Unknown message")
             await websocket.send(str(car))
