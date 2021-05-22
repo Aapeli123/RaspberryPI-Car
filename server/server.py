@@ -1,8 +1,7 @@
-import requests
 from car import Car
 import uuid
 from bottle import route, run
-
+import netifaces
 car = Car()
 
 sessionid = ""
@@ -74,7 +73,7 @@ def quit(sid):
     return
 
 def getIp():
-    return requests.get("https://api.ipify.org/").text
+    return netifaces.interfaces()["wlan0"]
 
 print(f"Starting server on address: {getIp()}:4242")
 run(host="0.0.0.0", port=4242)

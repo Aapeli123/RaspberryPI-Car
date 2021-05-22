@@ -1,0 +1,4 @@
+bottle
+Adafruit_PCA9685
+curses
+netifaces
