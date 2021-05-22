@@ -78,7 +78,7 @@ def quit(sid):
     return "False"
 
 def getIp():
-    return netifaces.interfaces()["wlan0"]
+    return netifaces.ifaddresses("wlan0")[2]
 
 print(f"Starting server on address: {getIp()}:4242")
 run(host="0.0.0.0", port=4242)
