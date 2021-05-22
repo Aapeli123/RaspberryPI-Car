@@ -20,6 +20,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "fi.otaniemenlukio.raspicar",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
