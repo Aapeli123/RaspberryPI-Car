@@ -74,7 +74,7 @@ def quit(sid):
     global sessionid
     if sid == sessionid:
         sessionid = ""
-        retutn "True"
+        return "True"
     return "False"
 
 def getIp():
