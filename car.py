@@ -64,6 +64,10 @@ class Car:
                 self.dir = 1
                 sleep(0.1)
 
+    def __prepareBackward(self):
+        pass
+
+
     def backward(self):
         if self.__hasNotChanged():
             sleep(0.1)
