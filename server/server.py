@@ -20,6 +20,7 @@ def goForward(sid):
     global sessionid
     if sessionid == sid:
         car.forward()
+        car.updatePwm()
         return str(car)
 
 @route('/b/<sid>')
@@ -27,6 +28,7 @@ def goBackwards(sid):
     global sessionid
     if sessionid == sid:
         car.backward()
+        car.updatePwm()
         return str(car)
 
 @route('/l/<sid>')
@@ -34,6 +36,7 @@ def turnLeft(sid):
     global sessionid
     if sessionid == sid:
         car.turnLeft()
+        car.updatePwm()
         return str(car)
 
 @route('/r/<sid>')
@@ -41,6 +44,7 @@ def turnRight(sid):
     global sessionid
     if sessionid == sid:
         car.turnRight()
+        car.updatePwm()
         return str(car)
 
 @route('/s/<sid>')
@@ -71,7 +75,8 @@ def quit(sid):
     global sessionid
     if sid == sessionid:
         sessionid = ""
-    return
+        retutn "True"
+    return "False"
 
 def getIp():
     return requests.get("https://api.ipify.org/").text
