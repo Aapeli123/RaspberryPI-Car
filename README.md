@@ -10,5 +10,5 @@ Example of driving the car
 ## ./server.py
 Server for remote controlling the car via websockets
 
-# raspicar-client
+# ./raspicar-client
 Contains a react native project for the controller. It's really scuffed but it works.
