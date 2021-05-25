@@ -98,4 +98,6 @@ class Car:
     
     def __str__(self):
         direction = "Forward" if self.dir == 1 else "Backwards"
-        return f"Car: Driving: {self.__driving}, Direction {direction}, Steering: {self.__steering_pwm}, Throttle: {self.__throttle_pwm}"
+        return "Car: Driving: {}, Direction {}, Steering: {}, Throttle: {}".format(
+            self.__driving, direction, self.__steering_pwm, self.__throttle_pwm
+        )
